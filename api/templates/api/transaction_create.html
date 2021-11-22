@@ -1,0 +1,47 @@
+{% extends 'base_layout.html' %}
+
+{% block title %}
+    <title>Crear una transacción</title>
+{% endblock %}
+
+{% block content %}
+    <h2> Nueva Transacción</h2>
+    
+    <div>
+        <form action="/create/" method="POST"> {% csrf_token %}
+            <div class="form-group">
+                <label for="destiny_bank" class="form-label">Seleccionar un Banco:</label>
+                <select class="form-select" aria-label="Default select example" id="destiny_bank" name="destiny_bank">
+                    <option selected>Seleccione un Banco</option>
+                    <option value="jep">Juventud Ecuatoriana Prograsista</option>
+                    <option value="austro">Banco del Austro</option>
+                    <option value="pichincha">Banco Pichincha</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dni" class="form-label">Cédula:</label>
+                <input id="dni" type="text" name="dni" placeholder="Cédula"
+                class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="account_id" class="form-label">Número de Cuenta:</label>
+                <input id="account_id" name="account_id" type="text" placeholder="Número de Cuenta"
+                class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="amount" class="form-label">Cantidad en dólares ($):</label>
+                <input id="amount" type="number" name="amount"
+                class="form-control"/>
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                <div class="ml-auto">
+                    <button type="submit" class="btn btn-primary mt-2">Transferir</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
