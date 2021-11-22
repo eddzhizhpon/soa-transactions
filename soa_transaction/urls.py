@@ -14,13 +14,39 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-# from api.api import UserAPI
-# from rest_framework.urlpatterns import format_suffix_pattformat_suffix_patterns
-from api import views
+from django.urls import path, re_path, include
+from django.conf.urls import url
+
+# Para SchemaView
+from rest_framework import permissions, routers
+
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Snippets API",
+      default_version='v1',
+      description="Test description",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+router = routers.DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/user/create', UserAPI.as_view(), name = 'api_create_user'),
-    path('user/create', views.UserList.as_view(), name = 'api_create_user'),
+    # re_path('', include('api.routers')),
+    path('api/', include('api.urls')),
+    path('api/', include(router.urls)),
+]
+
+urlpatterns += [
+    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
