@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block title %}
+    <title>Inicio</title>
+    {% endblock %}
+    <!-- Imports-->
+    <script src="{% static 'vendor/jquery-3.6.0.min.js' %}" ></script>
+
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'vendor/fontawesome/css/all.css' %}"/>
+
+    <!-- <script src="{% static 'vendor/popper.min.js' %}" ></script> -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" ></script>
+
+    {% block cssjs %}
+    {% endblock %}
+</head>
+<body>
+    <header class="">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark p-2">
+            <span class="navbar-brand mb-0 h1">Banco 1</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" 
+            data-target="#navbarCollapse" aria-controls="navbarCollapse" 
+            aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'transaction_list' %}active{% endif %}" 
+                        href="/">Transacciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'transaction_new' %}active{% endif %}" 
+                        href="/new">Nueva Transacción</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="container pt-5">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <!-- <footer class="footer">
+        <div class="container">
+          <span class="text-muted">Place sticky footer content here.</span>
+        </div>
+    </footer> -->
+</body>
+</html>
