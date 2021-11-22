@@ -1,33 +1,33 @@
 from django.db.models import fields
 from rest_framework import serializers
-# from django.contrib.auth.models import User
-from .models import User
+from rest_framework.fields import EmailField
+
+from django.contrib.auth.hashers import make_password
+
+from .models import Account, User
 
 class UserSerializer(serializers.ModelSerializer):
-    
+    first_name = serializers.CharField(
+        required=True)
+    last_name = serializers.CharField(
+        required=True)
+    username = serializers.CharField(
+        required=True)
+    email = serializers.EmailField(
+        required=True)
+    dni = serializers.CharField(
+        required=True)
+    password = serializers.CharField(
+        min_length=8, write_only=True)
+
+    def validate_password(self, value):
+        return make_password(value)
+
     class Meta:
         model = User
-        fields = ['fistname', 'lastname', 'username', 'email', 'password']
-    # id = serializers.ReadOnlyField()
-    # first_name = serializers.CharField()
-    # last_name = serializers.CharField()
-    # username = serializers.CharField()
-    # email = serializers.EmailField()
-    # password = serializers.CharField()
+        fields = ('first_name', 'last_name', 'username', 'email', 'dni', 'password')
 
-    # def create(self, validate_data):
-    #     instance = User()
-    #     instance.first_name = validate_data.get('first_name')
-    #     instance.last_name = validate_data.get('last_name')
-    #     instance.username = validate_data.get('username')
-    #     instance.email = validate_data.get('email')
-    #     instance.set_password(validate_data.get('password'))
-    #     instance.save()
-    #     return instance
-
-    # def validate_username(self, data):
-    #     users = User.objects.filter(username = data)
-    #     if len(users) != 0:
-    #         raise serializers.ValidationError('Este nombre de usuario ya existe')
-    #     else:
-    #         return data
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ('__all__')
