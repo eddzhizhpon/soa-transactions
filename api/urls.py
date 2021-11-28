@@ -12,9 +12,9 @@ urlpatterns = [
     path('auth/signup/',
         SignupView.as_view(), name='auth_signup'),
 
-    path('transfer/debit/',
+    path('debit',
         DebitView.as_view(), name='transfer_debit'),
 
-    path('transfer/credit/',
+    path('credit',
         CreditView.as_view(), name='transfer_credit'),
 ]

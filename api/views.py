@@ -21,6 +21,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 import json
 
+from django.http import HttpResponse, HttpResponseBadRequest
+
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username', None)
@@ -67,17 +69,20 @@ class DebitView(APIView):
         
         with transaction.atomic():
             transmiter_account = Account.objects.filter(account_id=data['transmiter_account'])
-
+            
             print(transmiter_account)
 
             if transmiter_account and transmiter_account[0].money_amount >= data['transaction_amount']:
                 actual_account = transmiter_account[0].money_amount
-                transmiter_account[0].money_amount = actual_account - data['transaction_amount']
-                transmiter_account.update()
+
+                new_amount = actual_account - data['transaction_amount']
+                Account.objects.filter(account_id=data['transmiter_account']).update(
+                    money_amount=new_amount
+                )
 
                 return JsonResponse({'code': 200, 'message': 'Debit correct.'})
             else:
-                return JsonResponse({'code': 400, 'message': 'Not enough money.'})
+                return HttpResponseBadRequest({'code': 400, 'message': 'Not enough money.'})
 
 
 class CreditView(APIView):
@@ -89,10 +94,13 @@ class CreditView(APIView):
             receiver_account = Account.objects.filter(account_id=data['receiver_account'])
 
             if receiver_account:
-                actual_account = receiver_account.money_amount
-                receiver_account.money_amount = actual_account + data['transaction_amount']
-                receiver_account.update()
+                actual_account = receiver_account[0].money_amount
+
+                new_amount = actual_account + data['transaction_amount']
+                Account.objects.filter(account_id=data['receiver_account']).update(
+                    money_amount=new_amount
+                )
 
                 return JsonResponse({'code': 200, 'message': 'Credit correct.'})
             else:
-                return JsonResponse({'code': 400, 'message': 'Something went wrong!'})
+                return HttpResponseBadRequest({'code': 400, 'message': 'Something went wrong!'})
