@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import LoginView, LogoutView, SignupView
+from .views import LoginView, LogoutView, SignupView, CreditView, DebitView
 
 urlpatterns = [
     path('auth/login/',
@@ -11,4 +11,10 @@ urlpatterns = [
 
     path('auth/signup/',
         SignupView.as_view(), name='auth_signup'),
+
+    path('transfer/debit/',
+        DebitView.as_view(), name='transfer_debit'),
+
+    path('transfer/credit/',
+        CreditView.as_view(), name='transfer_credit'),
 ]
