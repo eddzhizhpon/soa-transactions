@@ -1,0 +1,41 @@
+{% extends 'base_layout.html' %}
+
+{% block title %}
+    <title>Inicio de Sesión</title>
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <h2> Inicio de Sesión</h2>
+    
+    <div class="container">
+        <form method="POST"> {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="form-group">
+                        <label for="username">Nombre de usuario:</label>
+                        <input class="form-control" type="text" name="username"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input class="form-control" type="password" name="password"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <br/>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"> Iniciar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
