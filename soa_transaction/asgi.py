@@ -11,6 +11,7 @@ import os
 
 from django.core.asgi import get_asgi_application
 
+# Conexión con DJANGO y api de transacción
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'soa_transaction.settings')
 
 application = get_asgi_application()

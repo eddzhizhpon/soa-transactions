@@ -16,10 +16,12 @@ import json
 import os
 from django.core.exceptions import ImproperlyConfigured
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse_lazy
+
+# Construye directorios dentro del proyecto 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Return secret data from a JSON file
+# Retorna los datos requeridos para la conexión a la base de datos mediante un rachivo JSON
 with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
     secrets = json.load(secrets_file)
 
@@ -30,20 +32,19 @@ def get_secret(setting, secrets=secrets):
     except KeyError:
         raise ImproperlyConfigured("Set the {} setting".format(setting))
 
-# Quick-start development settings - unsuitable for production
+# Configuración de desarrollo de inicio rápido: inadecuada para la producción
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# clave secreta utilizada en producción
 SECRET_KEY = get_secret('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# no ejecutar con la depuración activada en producción
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'nuvarmy.club']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'soa.nuvarmy.club']
 
 
-# Application definition
-
+# Definición de la Applicación
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -66,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# rutas definidas para la transacción de la api
 ROOT_URLCONF = 'soa_transaction.urls'
 
 TEMPLATES = [
@@ -79,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'api.context_processors.bank_setting_names',
             ],
         },
     },
@@ -87,17 +90,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'soa_transaction.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
+'''
+Data para la conexión a la base de datos, que obtiene los valores necesarios desde el archivo JSON
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -128,10 +123,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Custom user model
+# Ruta por defecto para la api de transacción
 AUTH_USER_MODEL = "api.User"
 
-# Internationalization
+# Internacionalización
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -150,7 +145,32 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Default primary key field type
+# Llave por defecto
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    ),
+}
+
+LOGIN_REDIRECT_URL = reverse_lazy('api:transaction_create_render')
+LOGOUT_REDIRECT_URL = reverse_lazy('api:auth_login')
+
+LOGIN_URL = reverse_lazy('api:auth_login')
+
+BANK_NAME = get_secret('BANK_NAME')
+BANK_ID = get_secret('BANK_ID')
+IBM_CLIENT = get_secret('IBM_CLIENT')
+IBM_CLIENT_URL = get_secret('IBM_CLIENT_URL')
+
+# LOGIN
+# LOGOUT
+# Seleccionar la cuentra para debito
+# Conectar al ESB la vista
+# Probar la función de transacción
+# Informe
