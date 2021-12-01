@@ -16,8 +16,6 @@ import json
 import os
 from django.core.exceptions import ImproperlyConfigured
 
-from django.urls import reverse_lazy
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +39,7 @@ SECRET_KEY = get_secret('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'soa.nuvarmy.club']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'nuvarmy.club']
 
 
 # Application definition
@@ -81,7 +79,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'api.context_processors.bank_setting_names',
             ],
         },
     },
@@ -157,28 +154,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-REST_FRAMEWORK = {
-
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication'
-    ),
-}
-
-LOGIN_REDIRECT_URL = reverse_lazy('api:transaction_create_render')
-LOGOUT_REDIRECT_URL = reverse_lazy('api:auth_login')
-
-LOGIN_URL = reverse_lazy('api:auth_login')
-
-BANK_NAME = get_secret('BANK_NAME')
-BANK_ID = get_secret('BANK_ID')
-IBM_CLIENT = get_secret('IBM_CLIENT')
-IBM_CLIENT_URL = get_secret('IBM_CLIENT_URL')
-
-# LOGIN
-# LOGOUT
-# Seleccionar la cuentra para debito
-# Conectar al ESB la vista
-# Probar la función de transacción
-# Informe

@@ -28,11 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name', 'username', 'email', 'dni', 'password')
 
 class AccountSerializer(serializers.ModelSerializer):
-    account_id = serializers.CharField(
-        required=True)
-    money_amount = serializers.CharField(
-        required=True)
-
     class Meta:
         model = Account
-        fields = ('account_id', 'money_amount')
+        fields = ('__all__')

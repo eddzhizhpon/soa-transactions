@@ -23,8 +23,6 @@ from rest_framework import permissions, routers
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from django.contrib.auth.views import LoginView
-
 schema_view = get_schema_view(
    openapi.Info(
       title="Snippets API",
@@ -43,10 +41,8 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     # re_path('', include('api.routers')),
-    path('api/', include(('api.urls', 'api'), namespace='api')),
+    path('api/', include('api.urls')),
     path('api/', include(router.urls)),
-    path('',
-        LoginView.as_view(template_name='api/login.html'), name='auth_login'),
 ]
 
 urlpatterns += [

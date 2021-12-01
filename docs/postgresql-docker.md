@@ -16,7 +16,7 @@
    ```
 5. Init a container 
    ```bash
-    $ docker run -d --name transaction-psql-server -p 5432:5432 -v postgres-data:/var/lib/docker/volumes/transaction-psql-data/_data -e "POSTGRES_PASSWORD=PASS" postgres
+    $ docker run -d --name transaction-psql-server -p 5432:5432 -v postgres-data:/var/lib/docker/volumes/transaction-psql-data/_data -e "POSTGRES_PASSWORD=PASS" username
    ```
 
 6. Connect to postgresql
