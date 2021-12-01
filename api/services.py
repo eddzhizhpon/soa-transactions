@@ -1,10 +1,11 @@
 import requests
 from django.conf import settings
-import json
 
-# Genera una transacción enviando todos los datos necesarios
 def generate_transaction_request(url, data, headers={}):
-
+    '''
+    Genera un request de transacción enviando todos los datos
+    en formato Json.
+    '''
     response = requests.post(url, json=data, headers=headers)
 
     print(response)
@@ -12,8 +13,12 @@ def generate_transaction_request(url, data, headers={}):
     if response.status_code == 201:
         return response.json()
 
-# Identifica el tipo de consumo que se da con el ESB para asi realizar una transacción
 def transaction_request(data):
+    '''
+    Construye la request para el proceso de transacción.
+    En este se establecen los headers necesarios para
+    conectarse y enviar los datos al ESB.
+    '''
     headers = {
         'Content-Type': 'application/json',
         # 'Accept': 'application/json',
@@ -27,16 +32,22 @@ def transaction_request(data):
     else: 
         return False
 
-# Generador aleatorio de contraseñas usando api externa para usuarios
 def generate_password_request(url, headers={}):
-
+    '''
+    Realizar un request al generador aleatorio de contraseñas 
+    usando api externa para el registro de los usuarios.
+    '''
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         return response.json()
 
-# Envio de la contraseña generada hacia la el ESB
 def password_request():
+    '''
+    Construye la request con los headers y atributos necesarios
+    para realizar la solicitud del generador de contraseñas
+    al ESB.
+    '''
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

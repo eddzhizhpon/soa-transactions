@@ -23,15 +23,18 @@ from .forms import SignUpForm
 from .services import transaction_request, password_request
 from .models import Account
 
-'''
-Clase designada para autentificarse como usuario
-verificación de la api para conectarse con el ESB
-'''
 class SignupView(LoginRequiredMixin, UserPassesTestMixin, APIView):
-
+    '''
+    Clase designada para registrar un usuario
+    y persistirlo en la Base de Datos.
+    '''
     login_url = '/api/auth/login/'
 
     def test_func(self):
+        '''
+        Verifica que el usuario logueado tenga
+        permisos de administrador.
+        '''
         return self.request.user.is_superuser
 
     def get(self, request):
@@ -46,10 +49,13 @@ class SignupView(LoginRequiredMixin, UserPassesTestMixin, APIView):
         else:
             return Response(data={'reason': 'Usuario no creado.', 'errors': form.errors}, status=HTTP_406_NOT_ACCEPTABLE)
 
-# Conexión GET para envio de credenciales de usuario
 @csrf_exempt
 @api_view(('GET',))
 def generate_password(request):
+    '''
+    Método para obtener las contraseñas generadas
+    por la api: https://github.com/fawazsullia/password-generator
+    '''
     if request.method == 'GET':
         response = password_request()
         if response:
@@ -57,12 +63,15 @@ def generate_password(request):
         else:
             return Response(status=HTTP_500_INTERNAL_SERVER_ERROR)
 
-# Conexión POST para envio de la transacción
 @csrf_exempt
 @login_required
 @api_view(('POST',))
 def transaction_create(request):
-    
+    '''
+    Método para realizar el proceso de transacción.
+    En este se cargan las credenciales secretas dadas
+    por IBM App Connect para utilizar sus servicios.
+    '''    
     if request.method == 'POST':
         sid = transaction.savepoint()
         try:
@@ -90,8 +99,11 @@ def transaction_create_render(request):
     account_list = list(account_list)
     return render(request, 'api/transaction_create.html', {'account_list': account_list})
 
-'''Clase que verifica y valida un debito a la cuenta establecida'''
 class DebitView(APIView):
+    '''
+    Clase con el servicio para realizar un débito
+    a una cuenta registrada.
+    '''
     http_method_names = ['put']
 
     @csrf_exempt
@@ -115,9 +127,12 @@ class DebitView(APIView):
                 return Response(status=HTTP_500_INTERNAL_SERVER_ERROR, 
                     data={'reason': 'Not enough money.'})
 
-
-'''Clase que valida que una cuenta tenga la cantidad requerida para la transacción'''
 class CreditView(APIView):
+    '''
+    Clase con el servicio para realizar un crédito
+    a una cuenta registrada.
+    '''
+
     @csrf_exempt
     def put(self, request):
         data = json.loads(request.body)

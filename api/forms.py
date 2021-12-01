@@ -2,8 +2,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
-'''Clase para inicio de sesión mediante un formulario, donde se realizan ciertas validaciones'''
 class SignUpForm(UserCreationForm):
+    '''
+    Clase para el registro de usuarios mediante un formulario, 
+    donde se realizan ciertas validaciones correspondientes.
+    '''
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
     username = forms.CharField(max_length=30, required=True)
