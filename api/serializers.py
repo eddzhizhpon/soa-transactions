@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 
 from .models import Account, User
 
+# Serialización de usuarios y validación de datos que se envian al ESB
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(
         required=True)
@@ -27,6 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'dni', 'password')
 
+# Serialización de la cuenta que se envia al ESB
 class AccountSerializer(serializers.ModelSerializer):
     account_id = serializers.CharField(
         required=True)

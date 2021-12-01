@@ -1,3 +1,5 @@
+// Métodos para validar a los usuarios y generar contraseñas
+
 function createUser() {
     $.ajax({
         type: 'POST',

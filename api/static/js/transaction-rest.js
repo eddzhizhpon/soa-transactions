@@ -1,10 +1,8 @@
+// Métodos para validar la transación y mostrar mensajes
+
 function createTransaction() {
     let form_ser = $('#form-transaction').serializeArray()
     var data_json = {}
-
-    // $.map(form_ser, (n, i) => {
-    //     data_json[n['name']] = n['value'];
-    // });
     
     for (var i = 0; i < form_ser.length; i++){
         data_json[form_ser[i]['name']] = form_ser[i]['value'];
