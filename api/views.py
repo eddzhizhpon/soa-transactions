@@ -23,6 +23,10 @@ from .forms import SignUpForm
 from .services import transaction_request, password_request
 from .models import Account
 
+'''
+Clase designada para autentificarse como usuario
+verificación de la api para conectarse con el ESB
+'''
 class SignupView(LoginRequiredMixin, UserPassesTestMixin, APIView):
 
     login_url = '/api/auth/login/'
@@ -42,6 +46,7 @@ class SignupView(LoginRequiredMixin, UserPassesTestMixin, APIView):
         else:
             return Response(data={'reason': 'Usuario no creado.', 'errors': form.errors}, status=HTTP_406_NOT_ACCEPTABLE)
 
+# Conexión GET para envio de credenciales de usuario
 @csrf_exempt
 @api_view(('GET',))
 def generate_password(request):
@@ -52,6 +57,7 @@ def generate_password(request):
         else:
             return Response(status=HTTP_500_INTERNAL_SERVER_ERROR)
 
+# Conexión POST para envio de la transacción
 @csrf_exempt
 @login_required
 @api_view(('POST',))
@@ -84,6 +90,7 @@ def transaction_create_render(request):
     account_list = list(account_list)
     return render(request, 'api/transaction_create.html', {'account_list': account_list})
 
+'''Clase que verifica y valida un debito a la cuenta establecida'''
 class DebitView(APIView):
     http_method_names = ['put']
 
@@ -109,6 +116,7 @@ class DebitView(APIView):
                     data={'reason': 'Not enough money.'})
 
 
+'''Clase que valida que una cuenta tenga la cantidad requerida para la transacción'''
 class CreditView(APIView):
     @csrf_exempt
     def put(self, request):

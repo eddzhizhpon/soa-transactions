@@ -1,3 +1,5 @@
+// Métodos para llamar a los servicios del ESB
+
 function process(){
     document.getElementById('process-btn').disabled = true;
 

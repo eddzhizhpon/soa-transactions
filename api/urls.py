@@ -9,6 +9,7 @@ from .views import (
     transaction_create, generate_password
 )
 
+'''Rutas definidas para identificar las diferentes funcionalides con las que cuenta la api de transacción'''
 urlpatterns = [
     path('auth/login/',
         LoginView.as_view(template_name='api/login.html'), name='auth_login'),

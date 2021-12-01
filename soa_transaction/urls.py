@@ -40,6 +40,11 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 
+'''Rutas definidas para la conexión de la api
+admin -> ruta establecida para configuracion de usuarios usando django
+api -> ruta establecida para manejo de las transacciones en base a la api creada
+/ -> ruta establecida para el inicio o index de la api
+'''
 urlpatterns = [
     path('admin/', admin.site.urls),
     # re_path('', include('api.routers')),
@@ -49,6 +54,9 @@ urlpatterns = [
         LoginView.as_view(template_name='api/login.html'), name='auth_login'),
 ]
 
+'''
+urls para la comunicación con el ESB mediante usos de json y distintos parametros
+'''
 urlpatterns += [
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

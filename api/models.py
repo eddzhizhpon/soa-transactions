@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, UserManager, AbstractUs
 
 from django.conf import settings
 
-# Create your models here.
+# Clase usuario que abstrae los datos
 class User(AbstractUser):
     email = models.EmailField(
         max_length=150, unique=True)
@@ -18,6 +18,7 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+# Calse cuenta que crea una cuenta usando los datos del usuario
 class Account(models.Model):
     id = models.IntegerField(primary_key=True)
     account_id = models.CharField(
@@ -29,6 +30,7 @@ class Account(models.Model):
     def __str__(self):
         return f'{self.account_id} {self.money_amount}'
 
+# Clase de transacción que recibe datos necesarios para realizar una transacción
 class Transaction(models.Model):
     id = models.IntegerField(primary_key=True)
     date = models.DateTimeField()
